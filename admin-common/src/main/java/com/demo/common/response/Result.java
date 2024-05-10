@@ -17,8 +17,8 @@ public class Result extends HashMap<String, Object> {
     public static final String DATA_TAG = "data";
     public static final int SUCCESS_CODE = 200;
     private static final String SUCCESS_MSG = "success";
-    private static final String FAILURE_MSG = "failure";
-    private static final int FAILURE_CODE = 500;
+    private static final String FAIL_MSG = "failure";
+    private static final int FAIL_CODE = 500;
 
 
     public Result() {
@@ -46,17 +46,17 @@ public class Result extends HashMap<String, Object> {
     public static Result success(String msg, Object data) {
         return new Result(SUCCESS_CODE, msg, data);
     }
-    public static Result failure(int code, String msg) {
+    public static Result fail(int code, String msg) {
         return new Result(code, msg);
     }
-    public static Result failure(String msg) {
-        return new Result(FAILURE_CODE, msg);
+    public static Result fail(String msg) {
+        return new Result(FAIL_CODE, msg);
     }
-    public static Result failure(String msg, Object data) {
-        return new Result(FAILURE_CODE, msg, data);
+    public static Result fail(String msg, Object data) {
+        return new Result(FAIL_CODE, msg, data);
     }
-    public static Result failure() {
-        return new Result(FAILURE_CODE, FAILURE_MSG);
+    public static Result fail() {
+        return new Result(FAIL_CODE, FAIL_MSG);
     }
     @Override
     public Result put(String key, Object value) {
