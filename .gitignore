@@ -40,3 +40,4 @@ build/
 
 ### Other ###
 .env
+.pnpm-debug.log
