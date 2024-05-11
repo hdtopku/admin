@@ -1,4 +1,4 @@
-package com.demo.auth.domain.service;
+package com.demo.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.auth.domain.entity.UmsRole;

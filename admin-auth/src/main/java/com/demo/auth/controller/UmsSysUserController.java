@@ -1,7 +1,7 @@
-package com.demo.auth.domain.controller;
+package com.demo.auth.controller;
 
 import com.demo.auth.domain.entity.UmsSysUser;
-import com.demo.auth.domain.service.impl.UmsSysUserService;
+import com.demo.auth.service.impl.UmsSysUserService;
 import com.demo.common.response.Result;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;

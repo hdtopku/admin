@@ -1,6 +1,6 @@
 spring:
   config:
-    import: classpath:.env[.properties]
+    import: classpath:.env.local[.properties]
   datasource:
     url: jdbc:mysql://${MYSQL_URL}?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     username: ${MYSQL_USERNAME}

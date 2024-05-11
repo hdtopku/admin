@@ -41,15 +41,15 @@ public enum HttpStatus {
      * 参数列表错误（缺少，格式不正确）
      */
     BAD_REQUEST(400),
+    /**
+     * 禁止访问，授权过期
+     */
+    FORBIDDEN(401),
 
     /**
      * 未授权
      */
-    UNAUTHORIZED (401),
-    /**
-     * 禁止访问，授权过期
-     */
-    FORBIDDEN(403),
+    UNAUTHORIZED (403),
     /**
      * 资源、服务未找到
      */

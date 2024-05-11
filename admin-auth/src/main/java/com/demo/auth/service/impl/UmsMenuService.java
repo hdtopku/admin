@@ -1,9 +1,9 @@
-package com.demo.auth.domain.service.impl;
+package com.demo.auth.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.auth.domain.entity.UmsMenu;
-import com.demo.auth.domain.mapper.UmsMenuMapper;
-import com.demo.auth.domain.service.IUmsMenuService;
+import com.demo.auth.mapper.UmsMenuMapper;
+import com.demo.auth.service.IUmsMenuService;
 import org.springframework.stereotype.Service;
 
 /**
