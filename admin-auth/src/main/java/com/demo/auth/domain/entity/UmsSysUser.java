@@ -22,7 +22,7 @@ public class UmsSysUser implements java.io.Serializable {
     private Integer gender;
     private String avatar;
     private String password;
-    private String status;
+    private Integer status;
     private String creator;
     private String updater;
     @TableField(fill= FieldFill.INSERT)

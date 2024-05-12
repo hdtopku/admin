@@ -2,4 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.auth.mapper.UmsSysUserMapper">
 
+    <select id="selectByUsername" resultMap="UmsSysUserVo">
+        SELECT su.id,
+        su.username,
+        su.nickname,
+        su.email,
+        su.mobile,
+        su.password,
+        su.gender,
+        su.avatar,
+        su.status,
+        su.creator,
+        su.updater,
+        su.create_time,
+        su.update_time,
+        su.remark,
+        su.deleted,
+        r.role_id,
+        r.role_name,
+        r.sort,
+        r.role_label,
+        r.status role_status,
+        r.creator role_creator,
+        r.updater role_updater,
+        r.create_time role_create_time,
+        r.update_time role_update_time
+        FROM ums_sys_user su
+        Left Join ums_sys_user_role sur ON su.id = sur.user_id
+        left join ums_role r on sur.role_id = r.role_id
+        <where>
+            su.deleted = 0
+            and r.deleted = 0
+            and (su.username = #{account} or su.mobile = #{account} or su.email = #{account})
+        </where>
+    </select>
+    <resultMap id="UmsSysUserVo" type="com.demo.auth.domain.vo.UmsSysUserVo">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="nickname" column="nickname" />
+        <result property="email" column="email" />
+        <result property="mobile" column="mobile" />
+        <result property="password" column="password" />
+        <result property="gender" column="gender" />
+        <result property="avatar" column="avatar" />
+        <result property="status" column="status" />
+        <result property="creator" column="creator" />
+        <result property="updater" column="updater" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="remark" column="remark" />
+        <result property="deleted" column="deleted" />
+        <collection property="roleList" ofType="com.demo.auth.domain.entity.UmsRole">
+            <id property="roleId" column="role_id" />
+            <result property="roleName" column="role_name" />
+            <result property="roleLabel" column="role_label" />
+            <result property="status" column="status" />
+            <result property="creator" column="creator" />
+            <result property="updater" column="updater" />
+            <result property="remark" column="remark" />
+            <result property="deleted" column="deleted" />
+            <result property="status" column="role_status" />
+            <result property="creator" column="role_creator" />
+            <result property="updater" column="role_updater" />
+            <result property="sort" column="sort" />
+            <result property="createTime" column="role_create_time" />
+            <result property="updateTime" column="role_update_time" />
+        </collection>
+    </resultMap>
 </mapper>

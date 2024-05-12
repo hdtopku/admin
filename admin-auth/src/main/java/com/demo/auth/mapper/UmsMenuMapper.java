@@ -3,6 +3,10 @@ package com.demo.auth.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.demo.auth.domain.entity.UmsMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author lxh
@@ -11,4 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UmsMenuMapper extends BaseMapper<UmsMenu> {
+    List<UmsMenu> selectByRoleIds(@Param("roleIds") Set<Long> roleIds);
 }
