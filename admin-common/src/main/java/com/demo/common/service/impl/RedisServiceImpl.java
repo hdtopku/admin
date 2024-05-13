@@ -23,7 +23,7 @@ public class RedisServiceImpl implements RedisService {
         redisTemplate.opsForValue().set(key, value, timeoutSeconds, TimeUnit.SECONDS);
     }
     @Override
-    public void set(String key, Object value, long timeout, TimeUnit timeUnit ) {
+    public void set(String key, Object value, long timeout, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
@@ -50,6 +50,10 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Boolean expire(String key, long time) {
         return redisTemplate.expire(key, time, TimeUnit.SECONDS);
+    }
+    @Override
+    public Boolean expire(String key, long timeout, TimeUnit timeUnit) {
+        return redisTemplate.expire(key, timeout, timeUnit);
     }
 
     @Override
@@ -81,6 +85,12 @@ public class RedisServiceImpl implements RedisService {
     public Boolean hSet(String key, String hashKey, Object value, long time) {
         redisTemplate.opsForHash().put(key, hashKey, value);
         return expire(key, time);
+    }
+
+    @Override
+    public Boolean hSet(String key, String hashKey, Object value, long timeout, TimeUnit timeUnit) {
+        redisTemplate.opsForHash().put(key, hashKey, value);
+        return expire(key, timeout, timeUnit);
     }
 
     @Override

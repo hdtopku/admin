@@ -21,6 +21,6 @@ public class AuthController {
     private IAuthService authService;
     @PostMapping("/login")
     public Result login(@RequestBody LoginParam loginParam) {
-        return Result.success(authService.login(loginParam.getUsername(), loginParam.getPassword()));
+        return Result.success("login success",authService.login(loginParam.getUsername(), loginParam.getPassword()));
     }
 }

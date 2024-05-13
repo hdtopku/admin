@@ -2,14 +2,16 @@
 import {ref} from 'vue'
 import {ElButton} from 'element-plus'
 import {login} from '@/api/auth'
+import {setToken} from '@/utils/auth'
 
 const loginForm = ref({
   username: 'admin',
   password: '123456',
   rememberMe: false
 })
-const handleLogin = () => {
-  login(loginForm.value)
+const handleLogin = async() => {
+  const token =await login(loginForm.value)
+  setToken("token", token)
 }
 const forgotPassword = () => {
   console.log('forgot password')

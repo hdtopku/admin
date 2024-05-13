@@ -6,7 +6,7 @@ import com.demo.auth.constants.RedisCacheNames;
 import com.demo.auth.domain.vo.UmsSysUserVo;
 import com.demo.auth.service.IAuthService;
 import com.demo.common.service.RedisService;
-import com.demo.core.utils.JwtUtils;
+import com.demo.core.utils.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -33,10 +33,11 @@ public class AuthServiceImpl implements IAuthService {
         try {
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             UmsSysUserVo user= (UmsSysUserVo) authenticate.getPrincipal();
+            user.setLoginTime(System.currentTimeMillis());
             String uuid = IdUtil.simpleUUID();
             user.setToken(uuid);
-            redisService.set(RedisCacheNames.LOGIN_TOKEN_KEY+uuid, user, 1, TimeUnit.DAYS);
-            return JwtUtils.generateToken(MapUtil.of("uuid", uuid));
+            redisService.set(RedisCacheNames.LOGIN_TOKEN_KEY+uuid, user, JwtTokenUtil.JWT_TOKEN_EXPIRATION_SECONDS, TimeUnit.SECONDS);
+            return JwtTokenUtil.generateToken(MapUtil.of("sub", uuid));
         } catch(BadCredentialsException | UsernameNotFoundException e) {
             throw new UsernameNotFoundException("用户名或密码错误");
         } catch(LockedException e) {

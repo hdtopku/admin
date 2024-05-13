@@ -41,7 +41,9 @@ public interface RedisService {
     /**
      * 设置过期时间
      */
-    Boolean expire(String key, long time);
+    Boolean expire(String key, long timeoutSeconds);
+
+    Boolean expire(String key, long timeout, TimeUnit timeUnit);
 
     /**
      * 获取过期时间
@@ -71,7 +73,8 @@ public interface RedisService {
     /**
      * 向Hash结构中放入一个属性
      */
-    Boolean hSet(String key, String hashKey, Object value, long time);
+    Boolean hSet(String key, String hashKey, Object value, long timeoutSeconds);
+    Boolean hSet(String key, String hashKey, Object value, long timeout, TimeUnit timeUnit);
 
     /**
      * 向Hash结构中放入一个属性

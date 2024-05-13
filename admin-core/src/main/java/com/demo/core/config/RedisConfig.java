@@ -1,6 +1,6 @@
 package com.demo.core.config;
 
-import com.demo.common.config.BaseRedisConfig;
+import com.demo.common.config.redis.BaseRedisConfig;
 import org.springframework.context.annotation.Configuration;
 
 /**

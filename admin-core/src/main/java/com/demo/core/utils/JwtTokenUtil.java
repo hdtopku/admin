@@ -13,17 +13,18 @@ import java.util.Map;
  * {@code @Description}
  * {@code @createTime} 2024-05-12 17:48:02
  */
-public class JwtUtils {
+public class JwtTokenUtil {
     private static final String JWT_SECRET = "404E635266556ADF6586E3272357538782F413F4428472B4B6250645367566B5978BAD";
+    public static final int JWT_TOKEN_EXPIRATION_SECONDS = 60; // 30 minutes
 
-    private JwtUtils() {
+    private JwtTokenUtil() {
     }
 
     public static String generateToken(Map<String, Object> claims) {
         return Jwts.builder().claims(claims).signWith(getSigningKey()).compact();
     }
 
-    public static Claims getToken(String token) {
+    public static Claims parseToken(String token) {
         return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
     }
 
