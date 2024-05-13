@@ -11,10 +11,10 @@ import java.util.List;
 public class UmsMenuVo {
     private Long id;
     private Long parentId;
+    private String path;
     private String menuName;
     private String icon;
     private String componentPath;
-    private Integer sort;
     private Integer menuType;
     private List<UmsMenuVo> children;
 }

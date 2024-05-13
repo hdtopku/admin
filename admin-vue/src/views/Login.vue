@@ -5,6 +5,7 @@ import {login} from '@/api/auth'
 import {setToken} from '@/utils/auth'
 import {getSelfMenu} from "@/api/user";
 import useMenuStore from "@/stores/menu";
+import router from "@/router";
 
 const loginForm = ref({
   username: 'admin',
@@ -18,6 +19,7 @@ const handleLogin = async() => {
   const menuStore = useMenuStore();
   menuStore.setMenuList(menuList);
   ElMessage.success('登录成功')
+  router.push('/')
 }
 const forgotPassword = () => {
   console.log('forgot password')

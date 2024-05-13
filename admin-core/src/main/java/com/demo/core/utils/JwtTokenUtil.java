@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class JwtTokenUtil {
     private static final String JWT_SECRET = "404E635266556ADF6586E3272357538782F413F4428472B4B6250645367566B5978BAD";
-    public static final int JWT_TOKEN_EXPIRATION_SECONDS = 60; // 30 minutes
+    public static final int JWT_TOKEN_EXPIRATION_SECONDS = 60*60*24; // 1 day
 
     private JwtTokenUtil() {
     }

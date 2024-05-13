@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * {@code @createTime} 2024-05-10 12:22:38
  */
 @Service
-public class UmsMenuService extends ServiceImpl<UmsMenuMapper, UmsMenu> implements IUmsMenuService {
+public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> implements IUmsMenuService {
     @Resource
     private UmsMenuMapper umsMenuMapper;
 
@@ -34,7 +34,7 @@ public class UmsMenuService extends ServiceImpl<UmsMenuMapper, UmsMenu> implemen
         Set<Long> roleIds = user.getRoleList().stream().map(UmsRole::getRoleId).collect(Collectors.toSet());
         List<UmsMenu> menuList = umsMenuMapper.selectByRoleIds(roleIds);
         if (CollUtil.isEmpty(menuList)) return new ArrayList<>();
-        List<UmsMenuVo> menuVoList = BeanUtil.copyToList(menuList, UmsMenuVo.class).stream().sorted(Comparator.comparing(UmsMenuVo::getSort)).toList();
+        List<UmsMenuVo> menuVoList = BeanUtil.copyToList(menuList.stream().sorted(Comparator.comparing(UmsMenu::getSort)).toList(), UmsMenuVo.class);
         List<UmsMenuVo> parentMenuList = menuVoList.stream().filter(menu -> menu.getParentId().equals(0L)).toList();
         buildMenuTree(parentMenuList, menuVoList);
         return parentMenuList;

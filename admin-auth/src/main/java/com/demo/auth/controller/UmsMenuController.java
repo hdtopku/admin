@@ -1,7 +1,7 @@
 package com.demo.auth.controller;
 
 import com.demo.auth.domain.vo.UmsMenuVo;
-import com.demo.auth.service.impl.UmsMenuService;
+import com.demo.auth.service.impl.UmsMenuServiceImpl;
 import com.demo.common.response.Result;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/ums/menu")
 public class UmsMenuController {
     @Resource
-    private UmsMenuService menuService;
+    private UmsMenuServiceImpl menuService;
     @GetMapping("/self")
     public Result<List<UmsMenuVo>> getSelfMenu() {
         return Result.success(menuService.getSelfMenu());
