@@ -24,6 +24,7 @@ public class UmsSysUserVo extends UmsSysUser implements UserDetails {
 
     private List<UmsRole> roleList=new ArrayList<>();
     private Set<String> perms = new HashSet<>();
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,7 +1,11 @@
 package com.demo.auth.service.impl;
 
-import com.demo.auth.domain.entity.UmsSysUser;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
+import com.demo.auth.constants.RedisCacheNames;
+import com.demo.auth.domain.vo.UmsSysUserVo;
 import com.demo.auth.service.IAuthService;
+import com.demo.common.service.RedisService;
 import com.demo.core.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.*;
@@ -9,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author lxh
@@ -20,14 +24,19 @@ import java.util.HashMap;
 public class AuthServiceImpl implements IAuthService {
     @Resource
     private AuthenticationManager authenticationManager;
+    @Resource
+    private RedisService redisService;
 
     @Override
     public String login(String username, String password) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         try {
-            Authentication authenticate = authenticationManager.authenticate(token);
-            UmsSysUser user= (UmsSysUser) authenticate.getPrincipal();
-            return JwtUtils.generateToken(new HashMap<>());
+            Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+            UmsSysUserVo user= (UmsSysUserVo) authenticate.getPrincipal();
+            String uuid = IdUtil.simpleUUID();
+            user.setToken(uuid);
+            redisService.set(RedisCacheNames.LOGIN_TOKEN_KEY+uuid, user, 1, TimeUnit.DAYS);
+            return JwtUtils.generateToken(MapUtil.of("uuid", uuid));
         } catch(BadCredentialsException | UsernameNotFoundException e) {
             throw new UsernameNotFoundException("用户名或密码错误");
         } catch(LockedException e) {

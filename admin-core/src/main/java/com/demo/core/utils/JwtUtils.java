@@ -1,6 +1,5 @@
 package com.demo.core.utils;
 
-import cn.hutool.core.util.IdUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -21,8 +20,6 @@ public class JwtUtils {
     }
 
     public static String generateToken(Map<String, Object> claims) {
-        String token = IdUtil.simpleUUID();
-        claims.put("token", token);
         return Jwts.builder().claims(claims).signWith(getSigningKey()).compact();
     }
 

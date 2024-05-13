@@ -1,5 +1,6 @@
 package com.demo.auth.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.demo.auth.domain.entity.UmsMenu;
 import com.demo.auth.domain.entity.UmsRole;
 import com.demo.auth.domain.vo.UmsSysUserVo;
@@ -26,12 +27,15 @@ public class UmsSysUserDetailsService implements UserDetailsService {
     private UmsSysUserMapper sysUserMapper;
     @Resource
     private UmsMenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UmsSysUserVo user = sysUserMapper.selectByUsername(username);
         Set<Long> roleIds = user.getRoleList().stream().map(UmsRole::getRoleId).collect(Collectors.toSet());
-        List<UmsMenu> umsMenus = menuMapper.selectByRoleIds(roleIds);
-        user.setPerms(umsMenus.stream().map(UmsMenu::getPerms).collect(Collectors.toSet()));
+        if (CollUtil.isNotEmpty(roleIds)) {
+            List<UmsMenu> umsMenus = menuMapper.selectByRoleIds(roleIds);
+            user.setPerms(umsMenus.stream().map(UmsMenu::getPerms).collect(Collectors.toSet()));
+        }
         return user;
     }
 }

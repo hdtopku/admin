@@ -3,10 +3,10 @@
 <mapper namespace="com.demo.auth.mapper.UmsMenuMapper">
 
     <select id="selectByRoleIds" resultType="com.demo.auth.domain.entity.UmsMenu">
-        select distinct m.*
-        from ums_menu m
-        left join ums_role_menu rm on m.id = rm.menu_id
-        where m.status = 0 and m.deleted = 0 and rm.role_id in
+        select um.id,um.parent_id,um.menu_name,um.sort,um.menu_type,um.path,um.component_path,um.perms,um.icon
+        from ums_menu um
+        join ums_role_menu rm on um.id = rm.menu_id
+        where um.status = 0 and um.deleted = 0 and rm.role_id in
         <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
             #{roleId}
         </foreach>

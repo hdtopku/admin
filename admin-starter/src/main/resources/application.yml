@@ -10,3 +10,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   server:
     port: 8080
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
