@@ -1,8 +1,10 @@
 <script setup>
 import {ref} from 'vue'
-import {ElButton} from 'element-plus'
+import {ElButton, ElMessage} from 'element-plus'
 import {login} from '@/api/auth'
 import {setToken} from '@/utils/auth'
+import {getSelfMenu} from "@/api/user";
+import useMenuStore from "@/stores/menu";
 
 const loginForm = ref({
   username: 'admin',
@@ -12,6 +14,10 @@ const loginForm = ref({
 const handleLogin = async() => {
   const token =await login(loginForm.value)
   setToken("token", token)
+  const menuList =await getSelfMenu();
+  const menuStore = useMenuStore();
+  menuStore.setMenuList(menuList);
+  ElMessage.success('登录成功')
 }
 const forgotPassword = () => {
   console.log('forgot password')

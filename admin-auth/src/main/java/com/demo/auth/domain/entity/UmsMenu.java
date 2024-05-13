@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author lxh
@@ -34,4 +35,7 @@ public class UmsMenu implements java.io.Serializable {
     private String remark;
     @TableLogic(value = "0", delval = "1")
     private Integer deleted;
+
+    @TableField(exist = false)
+    private List<UmsMenu> children;
 }

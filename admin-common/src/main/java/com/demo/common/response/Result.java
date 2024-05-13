@@ -9,7 +9,7 @@ import java.util.HashMap;
  * {@code @createTime} 2024-05-10 12:54:29
  */
 
-public class Result extends HashMap<String, Object> {
+public class Result<T> extends HashMap<String, Object> {
     @Serial
     private static final long serialVersionUID = 1L;
     public static final String CODE_TAG = "code";
@@ -29,37 +29,37 @@ public class Result extends HashMap<String, Object> {
         put(CODE_TAG, code);
         put(MSG_TAG, msg);
     }
-    public Result(int code, String msg, Object data) {
+    public Result(int code, String msg, T data) {
         put(CODE_TAG, code);
         put(MSG_TAG, msg);
         put(DATA_TAG, data);
     }
-    public static Result success() {
-        return new Result();
+    public static <T> Result<T> success() {
+        return new Result<>();
     }
-    public static Result success(Object data) {
-        return new Result(SUCCESS_CODE, SUCCESS_MSG, data);
+    public static <T> Result<T> success(T data) {
+        return new Result<>(SUCCESS_CODE, SUCCESS_MSG, data);
     }
-    public static Result success(String msg) {
-        return new Result(SUCCESS_CODE, msg);
+    public static  <T> Result<T> success(String msg) {
+        return new Result<>(SUCCESS_CODE, msg);
     }
-    public static Result success(String msg, Object data) {
-        return new Result(SUCCESS_CODE, msg, data);
+    public static  <T> Result<T> success(String msg, T data) {
+        return new Result<>(SUCCESS_CODE, msg, data);
     }
-    public static Result fail(int code, String msg) {
-        return new Result(code, msg);
+    public static  <T> Result<T> fail(int code, String msg) {
+        return new Result<>(code, msg);
     }
-    public static Result fail(String msg) {
-        return new Result(FAIL_CODE, msg);
+    public static  <T> Result<T> fail(String msg) {
+        return new Result<>(FAIL_CODE, msg);
     }
-    public static Result fail(String msg, Object data) {
-        return new Result(FAIL_CODE, msg, data);
+    public static  <T> Result<T> fail(String msg, T data) {
+        return new Result<>(FAIL_CODE, msg, data);
     }
-    public static Result fail() {
-        return new Result(FAIL_CODE, FAIL_MSG);
+    public static  <T> Result<T> fail() {
+        return new Result<>(FAIL_CODE, FAIL_MSG);
     }
     @Override
-    public Result put(String key, Object value) {
+    public  Result<T> put(String key, Object value) {
         super.put(key, value);
         return this;
     }

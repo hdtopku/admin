@@ -25,7 +25,6 @@ request.interceptors.response.use(
     response => {
         let {msg, data, code} = response.data;
         if (code === 200) {
-            msg && ElMessage.success(msg)
             return data;
         } else if (code===500) {
             ElMessage.error(msg)
@@ -41,7 +40,6 @@ request.interceptors.response.use(
         return Promise.reject(new Error(msg))
     },
     error => {
-        console.log(error);
         if (error.message.includes("401")) {
             removeToken("token")
             ElMessage.error("请先登录")
@@ -58,7 +56,6 @@ request.interceptors.response.use(
         } else {
             ElMessage.error(`网络错误：${error.message}`)
         }
-        console.error(error)
         return Promise.reject(new Error(error.message))
     }
 )
