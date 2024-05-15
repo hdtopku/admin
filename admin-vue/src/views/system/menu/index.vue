@@ -1,5 +1,6 @@
 <script setup>
-import {ref} from 'vue'
+import {nextTick, onMounted, ref} from 'vue'
+import MenuForm from "@/views/system/menu/MenuForm.vue";
 
 const queryForm = ref({
   menuName: '',
@@ -38,28 +39,37 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   console.log(`current page: ${val}`)
 }
+const menuFormRef = ref(null)
+
+const handleAdd = () => {
+  menuFormRef.value.showModal()
+}
+onMounted(async () => {
+  await nextTick()
+
+})
 </script>
 
 <template>
-  <el-form :inline="true" :model="queryForm">
+  <MenuForm ref="menuFormRef"></MenuForm>
+  <el-form :inline="true" :model="queryForm" class="flex justify-end" size="large">
     <el-form-item label="菜单名称">
       <el-input v-model="queryForm.menuName"/>
     </el-form-item>
     <el-form-item label="权限名称">
       <el-input v-model="queryForm.perms"/>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="handleQuery">搜索</el-button>
-      <el-button @click="handleRest">重置</el-button>
-    </el-form-item>
   </el-form>
   <!-- 功能按钮 -->
-  <el-row :gutter="4" class="mb-4">
-    <el-col :span="6">
+  <div class="flex justify-between mb-4">
+    <div>
       <el-button type="primary" @click="handleAdd">新增</el-button>
       <el-button type="danger" @click="handleRemove(0)">删除</el-button>
-    </el-col>
-  </el-row>
+    </div>
+    <div>
+      <el-button type="primary" @click="handleQuery">搜索</el-button>
+    </div>
+  </div>
   <el-table :data="menuList" border>
     <el-table-column type="selection" width="40"/>
     <el-table-column label="序号" type="index" width="55"/>
