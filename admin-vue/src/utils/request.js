@@ -6,7 +6,7 @@ import {getToken, removeToken} from "@/utils/auth";
 const request = axios.create({
     baseURL: import.meta.env.VITE_APP_API_URL,
     withCredentials: false,
-    timeout: 6000,
+    timeout: 15000,
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
     }

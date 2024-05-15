@@ -1,70 +1,44 @@
-import {fileURLToPath, URL} from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Vue from '@vitejs/plugin-vue'
-import path from 'path'
-
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
+import * as path from "node:path"
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        Vue(),
-        // 按需导入，自动导入
+        vue(),
         AutoImport({
-            // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-            imports: ['vue'],
-            // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
-            resolvers: [
-                ElementPlusResolver(),
-                // 自动导入图标组件
-                IconsResolver({
-                    prefix: 'Icon',
-                })
-            ],
+            resolvers: [ElementPlusResolver()],
         }),
         Components({
-            resolvers: [
-                // 自动注册图标组件
-                IconsResolver({
-                    // 前缀（经测试，该选项无作用，图标依然只能通过 i-ep-xxx 调用）
-                    // <el-icon><Lock /></el-icon>  这样按需引入的话，这种形式的el-icon code就用不了了
-                    // 只能 <el-icon><i-ep-lock /></el-icon>
-                    enabledCollections: ['ep'],
-                }),
-                // 自动导入 Element Plus 组件
-                ElementPlusResolver({
-                    importStyle: 'sass'
-                })
-            ],
+            resolvers: [ElementPlusResolver()],
         }),
-        Icons({
-            autoInstall: true,
-        }),
-        // 手动导入 el 组件，会自动添加对应的 css
-        // 替换默认语言
-        ElementPlus({
-            defaultLocale: 'zh-cn',
-            useSource: true
-        }),
+        ElementPlus(),
+        createSvgIconsPlugin({
+            iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
+            symbolId: '[name]'
+        })
     ],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
-    },
     server: {
         port: 3000,
         proxy: {
             '/api': {
-                target: 'http://localhost:8080/',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
             }
-        },
+        }
     },
+    resolve: {
+        // 使用import导入文件时刻省略后缀
+        extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        }
+    }
 })

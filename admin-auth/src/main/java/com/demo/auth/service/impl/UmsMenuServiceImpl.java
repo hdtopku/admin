@@ -12,6 +12,7 @@ import com.demo.auth.service.IUmsMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,6 +36,11 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         List<UmsMenu> menuList = umsMenuMapper.selectByRoleIds(roleIds);
         if (CollUtil.isEmpty(menuList)) return new ArrayList<>();
         List<UmsMenuVo> menuVoList = BeanUtil.copyToList(menuList.stream().sorted(Comparator.comparing(UmsMenu::getSort)).toList(), UmsMenuVo.class);
+        menuVoList.forEach(menu -> {
+            if (StringUtils.hasText(menu.getPath()) && !menu.getPath().startsWith("/")) {
+                menu.setPath("/" + menu.getPath());
+            }
+        });
         List<UmsMenuVo> parentMenuList = menuVoList.stream().filter(menu -> menu.getParentId().equals(0L)).toList();
         buildMenuTree(parentMenuList, menuVoList);
         return parentMenuList;

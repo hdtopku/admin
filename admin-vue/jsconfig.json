@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vite-plugin-svg-icons/client"]
   },
   "exclude": ["node_modules", "dist"]
 }

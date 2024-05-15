@@ -6,23 +6,23 @@ import {setToken} from '@/utils/auth'
 import {getSelfMenu} from "@/api/user";
 import useMenuStore from "@/stores/menu";
 import router from "@/router";
+import {ChromeFilled, ElemeFilled, WindPower} from "@element-plus/icons-vue";
 
 const loginForm = ref({
   username: 'admin',
   password: '123456',
   rememberMe: false
 })
-const handleLogin = async() => {
-  const token =await login(loginForm.value)
+const handleLogin = async () => {
+  const token = await login(loginForm.value)
   setToken("token", token)
-  const menuList =await getSelfMenu();
+  const menuList = await getSelfMenu();
   const menuStore = useMenuStore();
   menuStore.setMenuList(menuList);
   ElMessage.success('登录成功')
   router.push('/')
 }
 const forgotPassword = () => {
-  console.log('forgot password')
 }
 </script>
 
@@ -53,9 +53,9 @@ const forgotPassword = () => {
         </el-form-item>
         <el-divider content-position="center">其他登录方式</el-divider>
         <div class="flex justify-center items-center mb-4 gap-10">
-          <i-ep-ChromeFilled/>
-          <i-ep-ElemeFilled/>
-          <i-ep-WindPower/>
+          <el-icon :size="25"><ChromeFilled/></el-icon>
+          <el-icon :size="25"><ElemeFilled/></el-icon>
+          <el-icon :size="25"><WindPower/></el-icon>
         </div>
         <el-form-item>
           <el-button class="w-full" type="primary" @click="handleLogin">登录</el-button>
