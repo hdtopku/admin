@@ -1,5 +1,6 @@
 import {ref} from 'vue'
 import {defineStore} from 'pinia'
+import router from "@/router/index.js";
 
 const modules = import.meta.glob('../views/**/*.vue')
 
@@ -64,6 +65,9 @@ const useMenuStore = defineStore('menu', () => {
                 else if (idx > 0) activeTab.value = tabList.value[idx - 1].name
                 else activeTab.value = tabList.value[idx].name
             }
+            sortTab.value = false
+            const routIdx = routeList.value.findIndex((item) => item.name === activeTab.value)
+            router.push(routeList.value[routIdx].path)
             tabList.value.splice(idx, 1)
         }
     }
