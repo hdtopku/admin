@@ -3,6 +3,7 @@
 import useMenuStore from "@/stores/menu.js";
 import {useRouter} from "vue-router";
 import SvgIcon from "@/components/SvgIcon/index.vue";
+
 const menuStore = useMenuStore()
 const {menuList} = menuStore
 
@@ -10,7 +11,6 @@ const router = useRouter()
 const handleClick = (menu) => {
   router.push(menu.path)
 }
-console.log(router.currentRoute.value.path)
 </script>
 
 <template>
