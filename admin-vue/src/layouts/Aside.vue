@@ -10,10 +10,11 @@ const router = useRouter()
 const handleClick = (menu) => {
   router.push(menu.path)
 }
+console.log(router.currentRoute.value.path)
 </script>
 
 <template>
-  <el-menu class="min-h-screen" active-text-color="#ffd04b"
+  <el-menu :default-active="router.currentRoute.value.path" class="min-h-screen" active-text-color="#ffd04b"
            background-color="#545c64" text-color="#fff">
     <template v-for="menu in menuList">
       <el-sub-menu :index="menu.path" v-if="menu.children.length">
