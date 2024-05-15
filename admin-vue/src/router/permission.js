@@ -1,35 +1,46 @@
 import router from "@/router/index.js";
 import useMenuStore from "@/stores/menu.js";
 import Layout from "@/layouts/Index.vue";
+import {getToken} from "@/utils/auth/index.js";
 
-// const whitelisted = ['/404', '/error']
+const whiteList = ['/login', '/404', '/error']
 
 let routeList
 
 router.beforeEach((to, from, next) => {
+    if (whiteList.indexOf(to.path) !== -1) {
+        next()
+        return
+    }
+    const menuStore = useMenuStore()
+    menuStore.lastPage=to.path
+    if(!getToken()?.length) {
+        next(`/login`)
+        return
+    }
     if (!routeList) {
-        const menuStore = useMenuStore()
         routeList = menuStore.getRouteList()
         if (routeList?.length) {
             router.addRoute(
                 {
                     component: Layout,
                     path: "/",
+                    name: "Layout",
                     children: routeList
                 }
             )
             next(to)
+            return
         }
-    } else {
-        // if (!to.matched.length) {
-        //     next({path: '/404'})
-        // }
     }
     next()
 })
-router.afterEach((to, from)=>{
-    if(to.name?.length && to.path?.length) {
-        const menuStore = useMenuStore()
+router.afterEach((to, from) => {
+    const menuStore = useMenuStore()
+    if (to.name?.length && to.path?.length) {
         menuStore.addTab(to.name)
+    }
+    if(to.path?.length) {
+        menuStore.setBreadcrumbList(to.path)
     }
 })

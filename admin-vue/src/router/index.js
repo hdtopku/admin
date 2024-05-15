@@ -5,6 +5,7 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            name: '首页',
             component: () => import('@/layouts/Index.vue'),
             children: [
                 {
@@ -15,7 +16,7 @@ const router = createRouter({
         },
         {
             path: '/login',
-            name: 'login',
+            name: '登录',
             component: () => import('@/views/login.vue')
         }
     ]

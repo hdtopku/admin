@@ -5,22 +5,31 @@ import {login} from '@/api/auth'
 import {setToken} from '@/utils/auth'
 import {getSelfMenu} from "@/api/user";
 import useMenuStore from "@/stores/menu";
+import useUserStore from "@/stores/user";
 import router from "@/router";
-import {ChromeFilled, ElemeFilled, WindPower} from "@element-plus/icons-vue";
+import {ChromeFilled, ElemeFilled, Lock, User, WindPower} from "@element-plus/icons-vue";
 
 const loginForm = ref({
   username: 'admin',
   password: '123456',
   rememberMe: false
 })
+const isLoading = ref(false)
 const handleLogin = async () => {
-  const token = await login(loginForm.value)
-  setToken("token", token)
-  const menuList = await getSelfMenu();
-  const menuStore = useMenuStore();
-  menuStore.setMenuList(menuList);
-  ElMessage.success('登录成功')
-  router.push('/')
+  isLoading.value = true
+  login(loginForm.value).then(token=>{
+    setToken(token)
+    const userStore = useUserStore()
+    userStore.getUserInfo()
+    getSelfMenu().then((menuList)=>{
+      const menuStore = useMenuStore();
+      menuStore.setMenuList(menuList);
+      router.push(menuStore.lastPage || '/')
+      ElMessage.success('登录成功')
+    })
+  }).catch(() => {
+    isLoading.value = false
+  })
 }
 const forgotPassword = () => {
 }
@@ -34,14 +43,14 @@ const forgotPassword = () => {
         <el-form-item>
           <el-input v-model="loginForm.username" placeholder="Username">
             <template #prefix>
-              <i-ep-user/>
+              <User/>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item>
           <el-input type="password" v-model="loginForm.password" placeholder="Password">
             <template #prefix>
-              <i-ep-lock/>
+              <Lock/>
             </template>
           </el-input>
         </el-form-item>
@@ -58,7 +67,7 @@ const forgotPassword = () => {
           <el-icon :size="25"><WindPower/></el-icon>
         </div>
         <el-form-item>
-          <el-button class="w-full" type="primary" @click="handleLogin">登录</el-button>
+          <el-button class="w-full" type="primary" @click="handleLogin" :loading="isLoading">登录</el-button>
         </el-form-item>
       </el-form>
     </div>

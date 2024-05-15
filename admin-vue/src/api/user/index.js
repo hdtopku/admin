@@ -6,3 +6,9 @@ export const getSelfMenu = ()=>{
         method: 'get'
     })
 }
+export const getSelfInfo = ()=>{
+    return request({
+        url: '/ums/sys/user/self',
+        method: 'get'
+    })
+}
