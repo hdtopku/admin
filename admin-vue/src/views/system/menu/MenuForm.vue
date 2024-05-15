@@ -1,5 +1,7 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 import {ref} from 'vue'
+import SvgIcon from "@/components/SvgIcon/index.vue";
+import IconSelect from "@/views/system/menu/IconSelect.vue";
 
 const dialogVisible = ref(true)
 const formTitle = ref('新增菜单')
@@ -75,7 +77,6 @@ const menuTypeOptions = [{
   label: '按钮',
   value: 2
 }]
-
 </script>
 
 <template>
@@ -104,19 +105,37 @@ const menuTypeOptions = [{
         </el-select>
       </el-form-item>
       <el-form-item label="菜单图标">
-        <el-input v-model="form.icon" placeholder="请选择菜单图标"></el-input>
+        <el-popover
+            :width="460"
+            content="请输入图标名称"
+            placement="bottom-start"
+            trigger="click"
+        >
+          <template #reference>
+            <el-input v-model="form.icon" placeholder="请输入图标名称">
+              <template #prefix>
+                <svg-icon v-if="form.icon" slot="prefix" :name="form.icon" height="18px" width="18px"></svg-icon>
+                <el-icon v-else class="el-input__icon">
+                  <search/>
+                </el-icon>
+              </template>
+            </el-input>
+          </template>
+          <IconSelect ref="IconSelectRef" v-model="form.icon" :active-icon="form.icon"
+                      @selected="icon=>form.icon=icon"/>
+        </el-popover>
       </el-form-item>
       <el-form-item label="菜单名称">
-        <el-input v-model="form.icon" placeholder="请输入菜单名称"></el-input>
+        <el-input v-model="form.menuName" placeholder="请输入菜单名称"></el-input>
       </el-form-item>
       <el-form-item label="路由地址">
-        <el-input v-model="form.icon" placeholder="路由地址"></el-input>
+        <el-input v-model="form.path" placeholder="路由地址"></el-input>
       </el-form-item>
       <el-form-item label="组件地址">
-        <el-input v-model="form.icon" placeholder="组件地址"></el-input>
+        <el-input v-model="form.componentPath" placeholder="组件地址"></el-input>
       </el-form-item>
       <el-form-item label="权限标识">
-        <el-input v-model="form.icon" placeholder="权限标识"></el-input>
+        <el-input v-model="form.perms" placeholder="权限标识"></el-input>
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注"></el-input>
