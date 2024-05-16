@@ -25,7 +25,7 @@ const useMenuStore = defineStore('menu', () => {
                     let routerInfo = {
                         name: item.menuName,
                         path: item.path,
-                        meta: {title: item.menuName},
+                        meta: {title: item.menuName, keepAlive: item.keepAlive},
                         // 设置组件
                         component: modules[`../views/${component}.vue`]
                     }

@@ -33,7 +33,15 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     public List<UmsMenuVo> getSelfMenu() {
         UmsSysUserVo user = (UmsSysUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<Long> roleIds = user.getRoleList().stream().map(UmsRole::getRoleId).collect(Collectors.toSet());
-        List<UmsMenu> menuList = umsMenuMapper.selectByRoleIds(roleIds);
+        return buildMenuTree(umsMenuMapper.selectByRoleIds(roleIds));
+    }
+
+    @Override
+    public List<UmsMenuVo> getMenuTree() {
+        return buildMenuTree(list());
+    }
+
+    private List<UmsMenuVo> buildMenuTree(List<UmsMenu> menuList) {
         if (CollUtil.isEmpty(menuList)) return new ArrayList<>();
         List<UmsMenuVo> menuVoList = BeanUtil.copyToList(menuList.stream().sorted(Comparator.comparing(UmsMenu::getSort)).toList(), UmsMenuVo.class);
         menuVoList.forEach(menu -> {
@@ -42,15 +50,15 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
             }
         });
         List<UmsMenuVo> parentMenuList = menuVoList.stream().filter(menu -> menu.getParentId().equals(0L)).toList();
-        buildMenuTree(parentMenuList, menuVoList);
+        dfs(parentMenuList, menuVoList);
         return parentMenuList;
     }
 
-    private void buildMenuTree(List<UmsMenuVo> parentMenuList, List<UmsMenuVo> menuList) {
+    private void dfs(List<UmsMenuVo> parentMenuList, List<UmsMenuVo> menuList) {
         for (UmsMenuVo menu : parentMenuList) {
             List<UmsMenuVo> children = menuList.stream().filter(subMenu -> subMenu.getParentId().equals(menu.getId())).toList();
             menu.setChildren(children);
-            buildMenuTree(children, menuList);
+            dfs(children, menuList);
         }
     }
 }

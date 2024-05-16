@@ -15,6 +15,7 @@
     "axios": "^1.6.8",
     "element-plus": "^2.7.2",
     "fast-glob": "^3.3.2",
+    "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vite-plugin-svg-icons": "^2.0.1",

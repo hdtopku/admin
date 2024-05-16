@@ -16,5 +16,6 @@ public class UmsMenuVo {
     private String icon;
     private String componentPath;
     private Integer menuType;
+    private Integer sort;
     private List<UmsMenuVo> children;
 }

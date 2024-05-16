@@ -1,5 +1,6 @@
 package com.demo.auth.controller;
 
+import com.demo.auth.domain.entity.UmsMenu;
 import com.demo.auth.domain.vo.UmsMenuVo;
 import com.demo.auth.service.impl.UmsMenuServiceImpl;
 import com.demo.common.response.Result;
@@ -18,9 +19,19 @@ import java.util.List;
 public class UmsMenuController {
     @Resource
     private UmsMenuServiceImpl menuService;
+
     @GetMapping("/self")
     public Result<List<UmsMenuVo>> getSelfMenu() {
         return Result.success(menuService.getSelfMenu());
     }
 
+    @GetMapping("/tree")
+    public Result<List<UmsMenuVo>> getMenuTree() {
+        return Result.success(menuService.getMenuTree());
+    }
+
+    @GetMapping("/list")
+    public Result<List<UmsMenu>> getMenuList() {
+        return Result.success(menuService.list());
+    }
 }

@@ -1,7 +1,9 @@
 import axios from 'axios'
 import {ElMessage} from "element-plus";
 import router from '@/router'
-import {getToken, removeToken} from "@/utils/auth";
+import {getToken, removeToken} from "@/utils/auth"
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_APP_API_URL,
@@ -13,6 +15,7 @@ const request = axios.create({
 })
 request.interceptors.request.use(
     config => {
+        NProgress.start()
         const token = getToken("token")
         token && (config.headers['Authorization'] = token)
         return config
@@ -23,6 +26,7 @@ request.interceptors.request.use(
 )
 request.interceptors.response.use(
     response => {
+        NProgress.done()
         let {msg, data, code} = response.data;
         if (code === 200) {
             return data;

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface IUmsMenuService extends IService<UmsMenu> {
     List<UmsMenuVo> getSelfMenu();
+
+    List<UmsMenuVo> getMenuTree();
 }

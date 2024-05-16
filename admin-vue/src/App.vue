@@ -9,7 +9,7 @@ const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 
 <template>
   <el-config-provider :locale="locale">
-<router-view/>
+    <router-view></router-view>
   </el-config-provider>
 </template>
 

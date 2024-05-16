@@ -1,5 +1,6 @@
 <script setup>
-import {nextTick, onMounted, ref} from 'vue'
+import {ref} from 'vue'
+import {getMenuTree} from "@/api/menu/index.js";
 import MenuForm from "@/views/system/menu/MenuForm.vue";
 
 const queryForm = ref({
@@ -13,45 +14,62 @@ const total = ref(0)
 const handleQuery = () => {
 
 }
-
-const menuList = ref([{
-  menuName: '菜单管理',
-  perms: "system:menu:list",
-  path: "/system/menu/list",
-  componentPath: "systemMenu",
-  createTime: "2021-11-11 11:11:11",
-  updateTime: "2021-11-11 11:11:11",
-  remark: "备注",
-  children: []
-}, {
-  menuName: '菜单管理',
-  perms: "system:menu:list",
-  path: "/system/menu/list",
-  componentPath: "systemMenu",
-  createTime: "2021-11-11 11:11:11",
-  updateTime: "2021-11-11 11:11:11",
-  remark: "备注",
-  children: []
-}])
 const handleSizeChange = (val) => {
   console.log(`${val} items per page`)
 }
 const handleCurrentChange = (val) => {
   console.log(`current page: ${val}`)
 }
-const menuFormRef = ref(null)
-
 const handleAdd = () => {
-  menuFormRef.value.showModal()
+  dialogVisible.value = true
 }
-onMounted(async () => {
-  await nextTick()
+const dialogVisible = ref(false)
+const formTitle = ref('新增菜单')
+const handleClose = () => {
+  dialogVisible.value = false
+}
 
-})
+const menuTree = ref([])
+const loading = ref(false)
+const queryMenuTree = () => {
+  loading.value = true
+  getMenuTree().then(res => {
+    menuTree.value = res
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
+}
+queryMenuTree()
+let MenuFormRef = null
+const setRefAction = (ref) => {
+  MenuFormRef = ref
+}
+const handleSubmit = () => {
+
+}
 </script>
 
 <template>
-  <MenuForm ref="menuFormRef"></MenuForm>
+  <div>
+    <el-dialog v-model="dialogVisible"
+               :before-close="handleClose"
+               :title="formTitle"
+               center
+               class="!p-10"
+               width="80%"
+    >
+      <MenuForm :ref="setRefAction" :menuTree="menuTree"></MenuForm>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleSubmit">
+            提交
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+  </div>
   <el-form :inline="true" :model="queryForm" class="flex justify-end" size="large">
     <el-form-item label="菜单名称">
       <el-input v-model="queryForm.menuName"/>
@@ -62,7 +80,7 @@ onMounted(async () => {
   </el-form>
   <!-- 功能按钮 -->
   <div class="flex justify-between mb-4">
-    <div>
+    <div v-if="menuTree.length">
       <el-button type="primary" @click="handleAdd">新增</el-button>
       <el-button type="danger" @click="handleRemove(0)">删除</el-button>
     </div>
@@ -70,7 +88,7 @@ onMounted(async () => {
       <el-button type="primary" @click="handleQuery">搜索</el-button>
     </div>
   </div>
-  <el-table :data="menuList" border>
+  <el-table :data="menuTree" border default-expand-all row-key="id">
     <el-table-column type="selection" width="40"/>
     <el-table-column label="序号" type="index" width="55"/>
     <el-table-column label="菜单名称" prop="menuName" width="150"/>
